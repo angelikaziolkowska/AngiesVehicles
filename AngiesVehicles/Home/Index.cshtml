@@ -1,0 +1,82 @@
+﻿@model AngiesVehicles.Models.InventoryViewModel
+@{
+    ViewBag.Title = "Angie's Vehicles";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+<div class="jumbotron">
+    <h1>@ViewBag.Title</h1>
+</div>
+<body ng-app>
+    <div class="jumbotron">
+        <div class="row">
+            <div class="column">
+                Car <input type="checkbox" ng-model="Car" ng-init="checked=true" />
+            </div>
+            <div class="column">
+                Bus <input type="checkbox" ng-model="Bus" ng-init="checked=true">
+            </div>
+            <div class="column">
+
+            </div>
+            <div class="column">
+                Boat <input type="checkbox" ng-model="Boat" ng-init="checked=true">
+                </div>
+            <div class="column">
+                Aeroplane <input type="checkbox" ng-model="Aeroplane" ng-init="checked=true">
+            </div>
+            </div>
+        <div class="row">
+            <div class="column">
+                0-199 capacity <input type="checkbox" ng-model="less" ng-init="checked=true">
+            </div>
+            <div class="column">
+                200+ capacity <input type="checkbox" ng-model="more" ng-init="checked=true">
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                @if (!Model.InventoryContents.Any())
+                {
+                    <h5>Inventory is empty.</h5><br />
+                }
+                else
+                {
+                    <table class="table col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive table-hover">
+                        <thead>
+                            <tr>
+                                <th>Vehicles</th>
+                                <th></th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var inventoryItem in Model.InventoryContents)
+                            {
+                                var mod = inventoryItem.VehicleTypeName;
+                                <tr ng-if='@mod && less && @inventoryItem.Passengers<200 || @mod && more && @inventoryItem.Passengers>=200 || @mod && less && more'>
+                                    <td>
+                                        <img class="rounded" src="~/Content/Images/@(inventoryItem.ImageName.ToString())" alt="product" height="200" width="300"><br />
+                                    </td>
+                                    <td>
+                                        <div class="text-left" role="gridcell">
+                                            <h3>@inventoryItem.Name </h3>
+                                            <h6>@inventoryItem.Price.ToString("C2")</h6>
+                                            <p>Seat capacity: @inventoryItem.Passengers</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-left" role="gridcell">
+                                            x @inventoryItem.Stock
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+</body>
+
